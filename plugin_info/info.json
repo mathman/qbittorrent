@@ -1,0 +1,32 @@
+{
+    "id": "qbittorrent",
+    "name": "qbittorrent",
+    "description": {
+        "fr_FR": "Supervision de vos instances qBittorrent dans Jeedom : \u00e9tat du client, vitesses de transfert, espace disque, ratio, et suivi d\u00e9taill\u00e9 de vos torrents et de leurs fichiers via la WebUI."
+    },
+    "licence": "AGPL",
+    "author": "Mathman",
+    "version": "1.0.0",
+    "require": "4.2",
+    "category": "monitoring",
+    "hasDependency": true,
+    "hasOwnDeamon": true,
+    "maxDependancyInstallTime": 0,
+    "link" : {
+		"forum":"https://community.jeedom.com/"
+	},
+    "changelog" : "https://mathman.github.io/qbittorrent/fr_FR/changelog",
+	"documentation" : "https://mathman.github.io/qbittorrent/fr_FR/",
+    "language": [
+        "fr_FR"
+    ],
+    "compatibility": [
+        "smart",
+        "luna",
+        "atlas",
+        "rpi",
+        "docker",
+        "diy",
+        "mobile"
+    ]
+}

@@ -1,0 +1,85 @@
+<div class="eqLogic eqLogic-widget text-center qbt-widget-m #custom_layout# #eqLogic_class# #class# #category#"
+     data-eqType="#eqType#"
+     data-eqLogic_id="#id#"
+     data-eqLogic_uid="#uid#"
+     data-version="#version#"
+     data-translate-category="#translate_category#"
+     data-category="#category#"
+     data-tags="#tags#">
+  <style>
+    .qbt-widget-m{
+      width:100% !important; box-sizing:border-box; padding:0 !important; border-radius:10px;
+      background:rgba(120,120,120,.05);
+    }
+    .qbt-widget-m .widget-name{
+      border-radius:10px 10px 0 0;
+    }
+    .qbt-widget-m .qbt-body{
+      padding:16px;
+    }
+    .qbt-widget-m .qbt-status{
+      display:inline-block; font-size:12px; font-weight:700; padding:3px 10px; border-radius:12px; margin-bottom:12px;
+    }
+    .qbt-widget-m .qbt-online{ background:rgba(40,167,69,.15); color:#28a745; }
+    .qbt-widget-m .qbt-offline{ background:rgba(220,53,69,.15); color:#dc3545; }
+
+    .qbt-widget-m .qbt-grid{
+      display:grid; grid-template-columns:1fr 1fr; gap:10px; font-size:13px;
+    }
+    .qbt-widget-m .qbt-box{
+      background:rgba(120,120,120,.10); border-radius:10px; padding:10px 6px; text-align:center;
+    }
+    .qbt-widget-m .qbt-box-label{ font-size:11px; opacity:.7; margin-bottom:3px; }
+    .qbt-widget-m .qbt-box-value{ font-size:16px; font-weight:700; }
+  </style>
+
+  <div class="widget-name">
+    <span style="color:#background-color#" title="#alert_name#">
+      <i class='#alert_icon#'></i>
+    </span>
+    <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#">
+      <i class="fas fa-sync"></i>
+    </span>
+    <span class="panelLink pull-left cursor">
+      <a href="#panelLink#"><i class="fas fa-external-link-alt"></i></a>
+    </span>
+    <span class="reportModeVisible">#name_display# <span class="object_name">#object_name#</span></span>
+    <a href="#eqLink#" class="reportModeHidden">#name_display# <span class="object_name">#object_name#</span></a>
+  </div>
+  <script>
+    if ('#panelLink#' == '') {
+      document.querySelector('.eqLogic[data-eqLogic_uid="#uid#"] .panelLink')?.remove()
+    }
+    if ('#refresh_id#' != '') {
+      document.querySelector('.eqLogic[data-eqLogic_uid="#uid#"] .refresh')?.addEventListener('click', function() {
+        jeedom.cmd.execute({ id: '#refresh_id#' })
+      })
+    } else {
+      document.querySelector('.eqLogic[data-eqLogic_uid="#uid#"] .refresh')?.remove()
+    }
+  </script>
+
+  <div class="qbt-body">
+
+  <div class="qbt-status #status_class# #status_history_class#" data-cmd_id="#status_id#">#status#</div>
+
+  <div class="qbt-grid">
+    <div class="qbt-box">
+      <div class="qbt-box-label">⬇️ Vitesse DL</div>
+      <div class="qbt-box-value #dlInfoSpeed_history_class#" data-cmd_id="#dlInfoSpeed_id#">#dlInfoSpeed# MB/s</div>
+    </div>
+    <div class="qbt-box">
+      <div class="qbt-box-label">⬆️ Vitesse UP</div>
+      <div class="qbt-box-value #upInfoSpeed_history_class#" data-cmd_id="#upInfoSpeed_id#">#upInfoSpeed# MB/s</div>
+    </div>
+    <div class="qbt-box">
+      <div class="qbt-box-label">💾 Espace libre</div>
+      <div class="qbt-box-value #freeSpaceDisk_history_class#" data-cmd_id="#freeSpaceDisk_id#">#freeSpaceDisk# GB</div>
+    </div>
+    <div class="qbt-box">
+      <div class="qbt-box-label">⚖️ Ratio global</div>
+      <div class="qbt-box-value #globalRatio_history_class#" data-cmd_id="#globalRatio_id#">#globalRatio#</div>
+    </div>
+  </div>
+  </div>
+</div>

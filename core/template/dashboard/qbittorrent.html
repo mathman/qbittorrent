@@ -1,0 +1,203 @@
+<div class="eqLogic eqLogic-widget text-center allowResize qbt-widget #custom_layout# #eqLogic_class# #class# #category#"
+     data-eqType="#eqType#"
+     data-eqLogic_id="#id#"
+     data-eqLogic_uid="#uid#"
+     data-version="#version#"
+     data-translate-category="#translate_category#"
+     data-category="#category#"
+     data-tags="#tags#"
+     style="width:#width#;height:#height#;#style#">
+  <style>
+    .qbt-widget{
+      box-sizing:border-box; overflow:visible; padding:0 !important; border-radius:10px;
+      background:rgba(120,120,120,.05); position:relative;
+    }
+    .qbt-widget .widget-name{
+      border-radius:10px 10px 0 0;
+    }
+    .qbt-widget .qbt-body{
+      padding:12px;
+    }
+
+    .qbt-widget .qbt-status{
+      display:inline-block; font-size:10px; font-weight:700; padding:2px 8px; border-radius:10px; margin-bottom:10px;
+    }
+    .qbt-widget .qbt-online{ background:rgba(40,167,69,.15); color:#28a745; }
+    .qbt-widget .qbt-offline{ background:rgba(220,53,69,.15); color:#dc3545; }
+
+    .qbt-widget .qbt-grid{
+      display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:10px; font-size:10px;
+    }
+    .qbt-widget .qbt-box{
+      background:rgba(120,120,120,.10); border-radius:6px; padding:5px 3px; text-align:center;
+    }
+    .qbt-widget .qbt-box-label{ font-size:9px; opacity:.7; margin-bottom:2px; }
+    .qbt-widget .qbt-box-value{ font-size:12px; font-weight:700; }
+
+    .qbt-widget select.qbt-select{
+      width:100%; padding:6px; border-radius:6px; font-size:12px;
+      background:rgba(120,120,120,.10); border:1px solid rgba(120,120,120,.25); color:inherit;
+    }
+
+    /* Popup */
+    .qbt-widget .qbt-overlay{
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,.5);
+      z-index:9999; align-items:center; justify-content:center; padding:20px;
+    }
+    .qbt-widget .qbt-modal{
+      background:#f4f4f4; color:#222; border-radius:12px; padding:16px;
+      max-width:420px; width:100%; max-height:85vh; overflow:auto; position:relative;
+      box-shadow:0 10px 40px rgba(0,0,0,.4);
+    }
+    .qbt-widget .qbt-modal-close{
+      position:absolute; top:10px; right:12px; cursor:pointer; font-size:18px; opacity:.6;
+    }
+    .qbt-widget .qbt-modal-close:hover{ opacity:1; }
+    .qbt-widget .qbt-modal-title{
+      font-size:15px; font-weight:700; margin-bottom:12px; padding-right:24px; word-break:break-word;
+    }
+
+    .qbt-widget .qbt-bar-bg{ background:rgba(120,120,120,.18); border-radius:6px; height:8px; overflow:hidden; margin-bottom:10px; }
+    .qbt-widget .qbt-bar-fill{ background:linear-gradient(90deg,#17a2b8,#28a745); height:100%; border-radius:6px; }
+
+    .qbt-widget .qbt-row{ display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px; }
+    .qbt-widget .qbt-row span:last-child{ font-weight:600; text-align:right; }
+
+    .qbt-widget .qbt-sep{ border-top:1px solid rgba(120,120,120,.2); margin:12px 0; padding-top:12px; }
+    .qbt-widget .qbt-sep-title{ font-size:12px; font-weight:700; opacity:.8; margin-bottom:8px; }
+  </style>
+
+  <div class="widget-name">
+    <span style="color:#background-color#" title="#alert_name#">
+      <i class='#alert_icon#'></i>
+    </span>
+    <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#">
+      <i class="fas fa-sync"></i>
+    </span>
+    <span class="panelLink pull-left cursor">
+      <a href="#panelLink#"><i class="fas fa-external-link-alt"></i></a>
+    </span>
+    <span class="reportModeVisible">#name_display# <span class="object_name">#object_name#</span></span>
+    <a href="#eqLink#" class="reportModeHidden">#name_display# <span class="object_name">#object_name#</span></a>
+  </div>
+  <script>
+    if ('#panelLink#' == '') {
+      document.querySelector('.eqLogic[data-eqLogic_uid="#uid#"] .panelLink')?.remove()
+    }
+    if ('#refresh_id#' != '') {
+      document.querySelector('.eqLogic[data-eqLogic_uid="#uid#"] .refresh')?.addEventListener('click', function() {
+        jeedom.cmd.execute({ id: '#refresh_id#' })
+      })
+    } else {
+      document.querySelector('.eqLogic[data-eqLogic_uid="#uid#"] .refresh')?.remove()
+    }
+  </script>
+
+  <div class="qbt-body">
+  <div class="qbt-status #status_class# #status_history_class#" data-cmd_id="#status_id#">#status#</div>
+
+  <div class="qbt-grid">
+    <div class="qbt-box">
+      <div class="qbt-box-label">⬇️ Vitesse DL</div>
+      <div class="qbt-box-value #dlInfoSpeed_history_class#" data-cmd_id="#dlInfoSpeed_id#">#dlInfoSpeed# MB/s</div>
+    </div>
+    <div class="qbt-box">
+      <div class="qbt-box-label">⬆️ Vitesse UP</div>
+      <div class="qbt-box-value #upInfoSpeed_history_class#" data-cmd_id="#upInfoSpeed_id#">#upInfoSpeed# MB/s</div>
+    </div>
+    <div class="qbt-box">
+      <div class="qbt-box-label">💾 Espace libre</div>
+      <div class="qbt-box-value #freeSpaceDisk_history_class#" data-cmd_id="#freeSpaceDisk_id#">#freeSpaceDisk# GB</div>
+    </div>
+    <div class="qbt-box">
+      <div class="qbt-box-label">⚖️ Ratio global</div>
+      <div class="qbt-box-value #globalRatio_history_class#" data-cmd_id="#globalRatio_id#">#globalRatio#</div>
+    </div>
+  </div>
+
+  <select class="qbt-select qbt-torrent-select" data-cmd_id="#cmd_torrentlist_id#">
+    #torrent_options#
+  </select>
+
+  <!-- Popup détail torrent (contient aussi le sélecteur/détail de fichier) -->
+  <div class="qbt-overlay qbt-torrent-overlay">
+    <div class="qbt-modal">
+      <div class="qbt-modal-close">✕</div>
+      <div class="qbt-modal-title qbt-torrent-title">Torrent</div>
+
+      <div class="qbt-bar-bg"><div class="qbt-bar-fill" style="width:#progress_pct#%;"></div></div>
+      <div class="qbt-row"><span>État</span><span class="#state_history_class#" data-cmd_id="#state_id#">#state#</span></div>
+      <div class="qbt-row"><span>Progression</span><span class="#progress_history_class#" data-cmd_id="#progress_id#">#progress#%</span></div>
+      <div class="qbt-row"><span>⬇️ / ⬆️</span><span><span class="#dlspeed_history_class#" data-cmd_id="#dlspeed_id#">#dlspeed#</span> / <span class="#upspeed_history_class#" data-cmd_id="#upspeed_id#">#upspeed#</span> MB/s</span></div>
+      <div class="qbt-row"><span>Seeds / Leechs</span><span><span class="#num_seeds_history_class#" data-cmd_id="#num_seeds_id#">#num_seeds#</span> / <span class="#num_leechs_history_class#" data-cmd_id="#num_leechs_id#">#num_leechs#</span></span></div>
+      <div class="qbt-row"><span>Ratio</span><span class="#ratio_history_class#" data-cmd_id="#ratio_id#">#ratio#</span></div>
+      <div class="qbt-row"><span>Taille</span><span class="#size_history_class#" data-cmd_id="#size_id#">#size# MB</span></div>
+      <div class="qbt-row"><span>Ajouté le</span><span class="#added_on_history_class#" data-cmd_id="#added_on_id#">#added_on#</span></div>
+
+      <div class="qbt-sep" style="#content_selector_style#">
+        <div class="qbt-sep-title">📄 Fichier</div>
+        <select class="qbt-select qbt-content-select" data-cmd_id="#cmd_contentlist_id#">
+          #content_options#
+        </select>
+
+        <div style="#content_details_style#; margin-top:10px;">
+          <div class="qbt-bar-bg"><div class="qbt-bar-fill" style="width:#progress_content_pct#%;"></div></div>
+          <div class="qbt-row"><span>Taille fichier</span><span class="#size_content_history_class#" data-cmd_id="#size_content_id#">#size_content# MB</span></div>
+          <div class="qbt-row"><span>Progression</span><span class="#progress_content_history_class#" data-cmd_id="#progress_content_id#">#progress_content#%</span></div>
+          <div class="qbt-row"><span>Priorité</span><span class="#priority_content_history_class#" data-cmd_id="#priority_content_id#">#priority_content#</span></div>
+          <div class="qbt-row"><span>Disponibilité</span><span class="#availability_content_history_class#" data-cmd_id="#availability_content_id#">#availability_content#%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var eqId = '#id#';
+  var ns = '.qbt-' + eqId;
+  var sel = '.eqLogic-widget[data-eqlogic_id="' + eqId + '"]';
+  var hasTorrentSelected = ('#torrent_details_style#' === '');
+  var openKey = 'qbt_open_torrent_' + eqId;
+
+  $('body').off('change' + ns, sel + ' .qbt-torrent-select');
+  $('body').on('change' + ns, sel + ' .qbt-torrent-select', function(){
+    var id = $(this).data('cmd_id');
+    var val = $(this).val();
+    if (!id || id == 0) return;
+    try { sessionStorage.setItem(openKey, Date.now()); } catch (e) {}
+    jeedom.cmd.execute({id: id, value: {select: val}});
+  });
+
+  $('body').off('change' + ns, sel + ' .qbt-content-select');
+  $('body').on('change' + ns, sel + ' .qbt-content-select', function(){
+    var id = $(this).data('cmd_id');
+    var val = $(this).val();
+    if (!id || id == 0) return;
+    try { sessionStorage.setItem(openKey, Date.now()); } catch (e) {}
+    jeedom.cmd.execute({id: id, value: {select: val}});
+  });
+
+  $('body').off('click' + ns, sel + ' .qbt-modal-close');
+  $('body').on('click' + ns, sel + ' .qbt-modal-close', function(){
+    $(this).closest('.qbt-overlay').hide();
+  });
+  $('body').off('click' + ns, sel + ' .qbt-overlay');
+  $('body').on('click' + ns, sel + ' .qbt-overlay', function(e){
+    if (e.target === this) { $(this).hide(); }
+  });
+
+  // Réouvre automatiquement le popup juste après une sélection utilisateur
+  // (dans les 8s suivant le clic), mais pas lors des rafraîchissements
+  // périodiques en arrière-plan (cron pull()) qui ne changent pas la sélection.
+  var lastOpen = 0;
+  try { lastOpen = parseInt(sessionStorage.getItem(openKey) || '0', 10); } catch (e) {}
+  if (hasTorrentSelected && lastOpen && (Date.now() - lastOpen) < 8000) {
+    var $select = $(sel + ' .qbt-torrent-select');
+    var title = $select.find('option:selected').text();
+    $(sel + ' .qbt-torrent-title').text(title || 'Torrent');
+    $(sel + ' .qbt-torrent-overlay').css('display', 'flex');
+  }
+})();
+</script>
