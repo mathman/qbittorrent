@@ -65,38 +65,10 @@ class qbittorrent extends eqLogic {
     public static function cron() {
         qbittorrent::pull();
     }
-
-	public static function dependancy_info($_refresh = false) {
-		$return = array();
-		$return['log'] = log::getPathToLog(__CLASS__ . '_update');
-		$return['progress_file'] = jeedom::getTmpFolder(__CLASS__) . '/dependency';
-		if (file_exists(jeedom::getTmpFolder(__CLASS__) . '/dependency')) {
-            $return['state'] = 'in_progress';
-        } else {
-			if (is_dir(dirname(__FILE__) . '/../../resources/qbittorrent/node_modules') && self::compilationOk()) {
-				$return['state'] = 'ok';
-			}
-			else {
-				$return['state'] = 'nok';
-			}
-		}
-		return $return;
-	}
-	
-	public static function dependancy_install() {
-		log::remove(__CLASS__ . '_update');
-		return array('script' => dirname(__FILE__) . '/../../resources/install_#stype#.sh ' . jeedom::getTmpFolder(__CLASS__) . '/dependency', 'log' => log::getPathToLog(__CLASS__ . '_update'));
-	}
-	
-	public static function compilationOk() {
-		if (shell_exec('ls /usr/bin/node 2>/dev/null | wc -l') == 0) {
-			return false;
-		}
-		return true;
-	}
 	
 	public static function deamon_info() {
 		$return = array();
+		$return['log'] = __CLASS__;
 		$return['state'] = 'nok';
 		$pid_file = jeedom::getTmpFolder(__CLASS__) . '/deamon.pid';
 		if (file_exists($pid_file)) {
