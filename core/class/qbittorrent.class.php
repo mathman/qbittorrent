@@ -23,7 +23,7 @@ class qbittorrent extends eqLogic {
 
     /*     * *************************Attributs****************************** */
 
-	public static $torrentCmds = [
+	private const TORRENT_CMDS = [
 		['id' => 'added_on', 'name' => 'Date ajout', 'type' => 'info', 'subType' => 'date', 'unit' => '', 'scale' => ''],
 		['id' => 'amount_left', 'name' => 'Données restantes à télécharger', 'type' => 'info', 'subType' => 'numeric', 'unit' => 'MB', 'scale' => '1000000'],
         ['id' => 'progress', 'name' => 'Progression', 'type' => 'info', 'subType' => 'numeric', 'unit' => '%', 'scale' => '0.01'],
@@ -41,7 +41,7 @@ class qbittorrent extends eqLogic {
 		['id' => 'upspeed', 'name' => 'Vitesse upload du torrent', 'type' => 'info', 'subType' => 'numeric', 'unit' => 'MB/s', 'scale' => '1000000'],
     ];
 	
-	public static $contentCmds = [
+	private const CONTENT_CMDS = [
 		['id' => 'size_content', 'name' => 'Taille fichier', 'type' => 'info', 'subType' => 'numeric', 'unit' => 'MB', 'scale' => '1000000'],
 		['id' => 'progress_content', 'name' => 'Progression fichier', 'type' => 'info', 'subType' => 'numeric', 'unit' => '%', 'scale' => '0.01'],
         ['id' => 'is_seed_content', 'name' => 'En téléchargement ou complet', 'type' => 'info', 'subType' => 'binary', 'unit' => '', 'scale' => ''],
@@ -49,7 +49,7 @@ class qbittorrent extends eqLogic {
 		['id' => 'availability_content', 'name' => 'Disponibilité fichier', 'type' => 'info', 'subType' => 'numeric', 'unit' => '%', 'scale' => '0.01'],
     ];
 	
-	public static $contentPriority = [
+	private const CONTENT_PRIORITY = [
 		['priority' => 0, 'label' => 'Do not download'],
 		['priority' => 1, 'label' => 'Normal priority'],
         ['priority' => 6, 'label' => 'High priority'],
@@ -432,7 +432,7 @@ class qbittorrent extends eqLogic {
     }
 	
 	public function updateTorrentCmds($torrent) {
-		foreach (qbittorrent::$torrentCmds as $torrentCmd) {
+		foreach (self::TORRENT_CMDS as $torrentCmd) {
 			$cmd = $this->getCmd(null, $torrentCmd['id']);
 			if (is_object($cmd)) {
 				$value = $torrent[$torrentCmd['id']];
@@ -450,13 +450,13 @@ class qbittorrent extends eqLogic {
 	}
 	
 	public function updateContentCmds($content) {
-		foreach (qbittorrent::$contentCmds as $contentCmd) {
+		foreach (self::CONTENT_CMDS as $contentCmd) {
 			$cmd = $this->getCmd(null, $contentCmd['id']);
 			if (is_object($cmd)) {
 				$property = str_replace('_content', '', $contentCmd['id']);
 				$value = $content[$property];
 				if ($contentCmd['id'] == 'priority_content') {
-					foreach (qbittorrent::$contentPriority as $priority) {
+					foreach (self::CONTENT_PRIORITY as $priority) {
 						if ($priority['priority'] == $content[$property]) {
 							$value = $priority['label'];
 							break;
@@ -477,7 +477,7 @@ class qbittorrent extends eqLogic {
 	}
 	
 	public function setVisibleTorrentCmds($value) {
-		foreach (qbittorrent::$torrentCmds as $torrentCmd) {
+		foreach (self::TORRENT_CMDS as $torrentCmd) {
 			$cmd = $this->getCmd(null, $torrentCmd['id']);
 			if (is_object($cmd)) {
 				$cmd->setIsVisible($value);
@@ -487,7 +487,7 @@ class qbittorrent extends eqLogic {
 	}
 	
 	public function setVisibleContentCmds($value) {
-		foreach (qbittorrent::$contentCmds as $contentCmd) {
+		foreach (self::CONTENT_CMDS as $contentCmd) {
 			$cmd = $this->getCmd(null, $contentCmd['id']);
 			if (is_object($cmd)) {
 				$cmd->setIsVisible($value);
@@ -523,6 +523,10 @@ class qbittorrent extends eqLogic {
 
 	// Fonction exécutée automatiquement avant la sauvegarde (création ou mise à jour) de l'équipement
 	public function preSave() {
+	}
+
+    // Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement
+    public function postSave() {
 		$refresh = $this->getCmd(null, 'refresh');
         if (!is_object($refresh)) {
             $refresh = new qbittorrentCmd();
@@ -787,7 +791,7 @@ class qbittorrent extends eqLogic {
         $torrentList->setOrder(17);
         $torrentList->save();
 		
-		$order = $this->createCmds(qbittorrent::$torrentCmds, 17);
+		$order = $this->createCmds(self::TORRENT_CMDS, 17);
 		
 		$contentId = $this->getCmd(null,'contentId');
         if (!is_object($contentId)) {
@@ -817,8 +821,8 @@ class qbittorrent extends eqLogic {
         $contentList->setOrder($order);
         $contentList->save();
 		
-		$order = $this->createCmds(qbittorrent::$contentCmds, $order);
-	}
+		$order = $this->createCmds(self::CONTENT_CMDS, $order);
+    }
 	
 	public function createCmds($arrayCmds, $startOrder) {
 		$order = $startOrder + 1;
@@ -852,18 +856,14 @@ class qbittorrent extends eqLogic {
 		return $order;
 	}
 
-  // Fonction exécutée automatiquement après la sauvegarde (création ou mise à jour) de l'équipement
-  public function postSave() {
-  }
+    // Fonction exécutée automatiquement avant la suppression de l'équipement
+    public function preRemove() {
+    }
 
-  // Fonction exécutée automatiquement avant la suppression de l'équipement
-  public function preRemove() {
-  }
-
-  // Fonction exécutée automatiquement après la suppression de l'équipement
-  public function postRemove() {
-	  self::syncEqLogicWithQbittorrent();
-  }
+    // Fonction exécutée automatiquement après la suppression de l'équipement
+    public function postRemove() {
+	    self::syncEqLogicWithQbittorrent();
+    }
 
 
  /*
