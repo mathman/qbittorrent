@@ -311,8 +311,13 @@ class qbittorrent extends eqLogic {
         if (is_object($torrentList)) {
             if (count($syncMainRet['torrents']) > 0) {
                 $torrentList->setIsVisible(1);
+                $torrents = $syncMainRet['torrents'];
+                // Tri du plus récemment ajouté au plus ancien.
+                uasort($torrents, function ($a, $b) {
+                    return $b['added_on'] <=> $a['added_on'];
+                });
                 $list = "";
-                foreach ($syncMainRet['torrents'] as $id => $torrent) {
+                foreach ($torrents as $id => $torrent) {
                     $list = $list . $separator . $id  . '|' . $torrent['name'];
                     $separator = ';';
                 }
